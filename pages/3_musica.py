@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 st.header("Simulador Música")
 
 # Cargar el conjunto de datos
-df = pd.read_csv('pages/3_musica.py')
+df = pd.read_csv('static/datasets/musica.csv')
 
 # Asignar nombres de columnas basados en los resultados proporcionados
 artist_col = 'artists'.strip()  # Asegurarse de que no haya espacios en blanco alrededor del nombre
