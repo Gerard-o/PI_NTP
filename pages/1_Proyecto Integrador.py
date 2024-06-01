@@ -33,17 +33,28 @@ st.write(df)
 # Muestra un gráfico de barras usando el DataFrame, configurando 'Tipo' como el índice
 st.bar_chart(df.set_index('Tipo'))
 
-#musica=[["Canción","Hips Don't Lie","Mi Gente","La Bicicleta","Felices los 4","Tusa","Traicionera","De Donde Vengo Yo","Te Mando Flores","Día tras Día","Una Lady Como Tú"],
- #        ["Discográfica","Epic Records","Universal Music Latin","Sony Music Latin","Sony Music Latin","Universal Music Latin","Universal Music Latino","Sony Music Latin","EMI","La Industria Inc"],
-  #       ["Productor y mezcla","Shakira, Wyclef Jean, Jerry 'Wonder' Duplessis, Clive Davis"," DJ Snake, Willy William","Andrés Castro, Shakira","Rude Boyz (Kevin ADG y Chan El Genio)","Mauricio Rengifo, Andrés Torres","Andrés Castro","Ovy On The Drums","Fonseca, Bernardo Ossa","Andrés Cepeda y Freddy Camelo","Julián Turizo y Sergio George"],
-   #      ["Género","Pop- Reguetón","Reguetón","Vallenato, Pop Latino","Reguetón, Pop Latino","Reguetón, Trap Latino","Reguetón, Pop Latino","Hip Hop, Afro-Colombiano","Pop Latino, Vallenato"," Pop Latino, Balada","Reguetón, Pop Latino"],
-    #     ["Lugar de origen","Barranquilla","Medellín","Santa Marta","Medellín","Medellín","Medellín","Quibdó","Bogotá","Bogotá","Montería"],
-     #    ["Año de  publicación",[2006,2017,2016,2017,2019,2016,2016,2016,2009,2006]],
-      #  ["Duración", ["3:38", "3:16", "3:47", "3:50", "3:20", "3:49", "4:20", "4:11", "4:16", "3:59"]]
-#]
-#df_musica=pd.DataFrame(musica)
+# La lista de listas
+musica = [
+    ["Hips Don't Lie", "Epic Records", "Shakira, Wyclef Jean, Jerry 'Wonder' Duplessis, Clive Davis", "Pop- Reguetón", "Barranquilla", 2006, "3:38"],
+    ["Mi Gente", "Universal Music Latin", "DJ Snake, Willy William", "Reguetón", "Medellín", 2017, "3:16"],
+    ["La Bicicleta", "Sony Music Latin", "Andrés Castro, Shakira", "Vallenato, Pop Latino", "Santa Marta", 2016, "3:47"],
+    ["Felices los 4", "Sony Music Latin", "Rude Boyz (Kevin ADG y Chan El Genio)", "Reguetón, Pop Latino", "Medellín", 2017, "3:50"],
+    ["Tusa", "Universal Music Latin", "Mauricio Rengifo, Andrés Torres", "Reguetón, Trap Latino", "Medellín", 2019, "3:20"],
+    ["Traicionera", "Universal Music Latino", "Andrés Castro", "Reguetón, Pop Latino", "Medellín", 2016, "3:49"],
+    ["De Donde Vengo Yo", "Sony Music Latin", "Ovy On The Drums", "Hip Hop, Afro-Colombiano", "Quibdó", 2016, "4:20"],
+    ["Te Mando Flores", "EMI", "Fonseca, Bernardo Ossa", "Pop Latino, Vallenato", "Bogotá", 2006, "4:11"],
+    ["Día tras Día", "La Industria Inc", "Andrés Cepeda y Freddy Camelo", "Pop Latino, Balada", "Bogotá", 2009, "4:16"],
+    ["Una Lady Como Tú", "Universal Music Latino", "Julián Turizo y Sergio George", "Reguetón, Pop Latino", "Montería", 2016, "3:59"]
+]
 
-#st.write(df_musica)
+# Nombres de las columnas
+columnas = ["Canción", "Discográfica", "Productor y mezcla", "Género", "Lugar de origen", "Año de publicación", "Duración"]
 
+# Crear el DataFrame
+df_musica = pd.DataFrame(musica, columns=columnas)
 
+# Configurar la aplicación de Streamlit
+st.title('Lista de Canciones')
 
+# Mostrar el DataFrame en la aplicación
+st.dataframe(df_musica)
