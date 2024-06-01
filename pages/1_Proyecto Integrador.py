@@ -58,3 +58,11 @@ st.title('Lista de Canciones')
 
 # Mostrar el DataFrame en la aplicación
 st.dataframe(df_musica)
+
+# Convertir la columna 'Año de publicación' a string para que sea categórica en el gráfico de barras
+df_musica['Año de publicación'] = df_musica['Año de publicación'].astype(str)
+
+
+
+# Opción alternativa: gráfico de barras agrupando por año de publicación y género
+st.bar_chart(df_musica.groupby(['Año de publicación', 'Género']).size().unstack().fillna(0))
