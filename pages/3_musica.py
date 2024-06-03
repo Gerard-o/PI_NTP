@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 st.header("Simulador Música")
 
 # Cargar el conjunto de datos
