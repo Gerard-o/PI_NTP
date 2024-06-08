@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
-st.title("proyecto integrador")
+st.title("Simulador Cesde")
 
 df = pd.read_csv('static/datasets/cesde.csv')
 
