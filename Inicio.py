@@ -178,6 +178,7 @@ st.subheader("Equipo y Contacto")
 st.write("**Miembros del equipo:**")
 st.write("- GERARDO DE JESUS IDARRAGA CIRO: -----------.")
 st.write("- FREDY ALBERTO POSADA YARCE: -----------.")
+st.write("- JUAN SEBASTIAN ROMERO : -----------.")
 
 st.write("""Información de contacto:[Enlace Información de contacto](https://outlook.office365.com/mail/)""")
 
