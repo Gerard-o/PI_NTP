@@ -145,10 +145,24 @@ La integración de funciones de interacción y comunidad permite a los usuarios 
 ''', unsafe_allow_html=True)
 # Gráfico interactivo o visualización (Opcional)
 # Reemplaza con tus datos y visualización específicos
-data = [10, 20, 30, 40, 50]
-labels = ["Categoría A", "Categoría B", "Categoría C", "Categoría D", "Categoría E"]
+
+# Datos de ejemplo de los géneros musicales más escuchados en todo el mundo
+data = [30, 25, 20, 15, 10]
+labels = ["Pop", "Hip-Hop", "Rock", "EDM", "Reggaetón"]
+
+# Crear la figura y el eje
 fig, ax = plt.subplots()
-ax.pie(data, labels=labels, autopct="%1.1f%%")
+
+# Dibujar el gráfico de barras
+ax.bar(labels, data, color=["#ff9999","#66b3ff","#99ff99","#ffcc99","#c2c2f0"])
+
+# Añadir títulos y etiquetas
+ax.set_title("Géneros Musicales Más Escuchados en Todo el Mundo")
+ax.set_xlabel("Géneros Musicales")
+ax.set_ylabel("Porcentaje de Audiencia (%)")
+
+# Mostrar el gráfico
+plt.show()
 # Quitar el fondo
 fig.patch.set_facecolor('none')
 ax.patch.set_facecolor('none')
