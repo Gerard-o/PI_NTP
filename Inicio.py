@@ -176,8 +176,8 @@ st.write("**Contáctenos:** [Enlace al correo electrónico de contacto](https://
 # Pie de página con los miembros del equipo e información del proyecto
 st.subheader("Equipo y Contacto")
 st.write("**Miembros del equipo:**")
-st.write("- GERARDO DE JESUS IDARRAGA CIRO: Product Owner.")
-st.write("- FREDY ALBERTO POSADA YARCE: Product Owner.")
+st.write("- GERARDO DE JESUS IDARRAGA CIRO: -----------.")
+st.write("- FREDY ALBERTO POSADA YARCE: -----------.")
 
 st.write("""Información de contacto:[Enlace Información de contacto](https://outlook.office365.com/mail/)""")
 
