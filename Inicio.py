@@ -33,6 +33,18 @@ st.header("BomMusic")
 
 st.image("imgproyecto12.png", width=600)
 
+# Pie de página con los miembros del equipo e información del proyecto
+st.subheader("Equipo y Contacto")
+st.write("**Miembros del equipo:**")
+st.write("- GERARDO DE JESUS IDARRAGA CIRO: -----------.")
+st.write("- FREDY ALBERTO POSADA YARCE: -----------.")
+st.write("- JUAN SEBASTIAN ROMERO : -----------.")
+
+st.write("""Información de contacto:[Enlace Información de contacto](https://outlook.office365.com/mail/)""")
+
+st.write("Correo electrónico: [Enlace al correo electrónico de contacto](https://outlook.office365.com/mail/)")
+#----------------------------------------
+
 st.subheader("Descripción del proyecto")
 st.write('''
 <p class="custom-text">
@@ -173,13 +185,3 @@ st.subheader("¡Toma Acción!")
 st.write("**Visite nuestro sitio web:** [Enlace al sitio web del proyecto](https://g7qyxwvy2fxpgtigncgkmf.streamlit.app/)")
 st.write("**Contáctenos:** [Enlace al correo electrónico de contacto](https://outlook.office365.com/mail/)")
 
-# Pie de página con los miembros del equipo e información del proyecto
-st.subheader("Equipo y Contacto")
-st.write("**Miembros del equipo:**")
-st.write("- GERARDO DE JESUS IDARRAGA CIRO: -----------.")
-st.write("- FREDY ALBERTO POSADA YARCE: -----------.")
-st.write("- JUAN SEBASTIAN ROMERO : -----------.")
-
-st.write("""Información de contacto:[Enlace Información de contacto](https://outlook.office365.com/mail/)""")
-
-st.write("Correo electrónico: [Enlace al correo electrónico de contacto](https://outlook.office365.com/mail/)")
