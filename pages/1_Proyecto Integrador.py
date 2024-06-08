@@ -2,38 +2,38 @@ import streamlit as st
 import pandas as pd
 
 # Agrega un encabezado en la aplicación web
-st.markdown("<h1 style='text-align: center;'>Informacion</h1>", unsafe_allow_html=True)
+#st.markdown("<h1 style='text-align: center;'>Informacion</h1>", unsafe_allow_html=True)
 
 
 # Crea un diccionario con información sobre personas
-datos = {"Nombre": ["Ana", "Juan", "Pedro"],
-         "Edad": [25, 30, 35],
-         "Ciudad": ["Madrid", "Barcelona", "Sevilla"]}
+#datos = {"Nombre": ["Ana", "Juan", "Pedro"],
+#        "Edad": [25, 30, 35],
+#       "Ciudad": ["Madrid", "Barcelona", "Sevilla"]}
 
 # Convierte el diccionario a un DataFrame
-df_datos = pd.DataFrame(datos)
+#df_datos = pd.DataFrame(datos)
 
 # Muestra el DataFrame como una tabla en la aplicación web
-st.table(df_datos)
+#st.table(df_datos)
 
-st.markdown("<h1 style='text-align: center;'>Gráfico</h1>", unsafe_allow_html=True)
+#st.markdown("<h1 style='text-align: center;'>Gráfico</h1>", unsafe_allow_html=True)
 # Muestra un gráfico de barras usando el DataFrame, configurando 'Nombre' como el índice
-st.bar_chart(df_datos.set_index('Nombre'))
-st.markdown("<h1 style='text-align: center;'>Cantidad de animales</h1>", unsafe_allow_html=True)
+#st.bar_chart(df_datos.set_index('Nombre'))
+#st.markdown("<h1 style='text-align: center;'>Cantidad de animales</h1>", unsafe_allow_html=True)
 
 # Crea otro diccionario con información sobre diferentes tipos de animales y sus cantidades
-animales = {"Tipo": ['Perro', 'Gato', 'Pájaro', 'Conejo', 'Hamster'],
-        "Cantidad": [50, 30, 20, 10, 5],
-        "Dieta": ["Omnívoro ","Carnívoro ","Granívoros","Herbívoro ","Omnívoro "]}
+#animales = {"Tipo": ['Perro', 'Gato', 'Pájaro', 'Conejo', 'Hamster'],
+#        "Cantidad": [50, 30, 20, 10, 5],
+#        "Dieta": ["Omnívoro ","Carnívoro ","Granívoros","Herbívoro ","Omnívoro "]}
 # Convierte el diccionario a un DataFrame
-df = pd.DataFrame(animales)
+#df = pd.DataFrame(animales)
 
 # Muestra el DataFrame en la aplicación web
-st.table(df)
+#st.table(df)
 
-st.markdown("<h1 style='text-align: center;'>Gráfico</h1>", unsafe_allow_html=True)
+#st.markdown("<h1 style='text-align: center;'>Gráfico</h1>", unsafe_allow_html=True)
 # Muestra un gráfico de barras usando el DataFrame, configurando 'Tipo' como el índice
-st.bar_chart(df.set_index('Tipo'))
+#st.bar_chart(df.set_index('Tipo'))
 
 # La lista de listas
 musica = [
