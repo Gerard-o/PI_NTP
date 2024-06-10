@@ -1,14 +1,14 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns # type: ignore
+import seaborn as sns 
 
 st.set_page_config(layout="wide")
 
 
 
 
-st.title("Explorador de Base de Datos de Canciones")
+st.title("Datasets Canciones")
 
 df = pd.read_csv('static/datasets/Canciones.csv')
 
@@ -41,10 +41,8 @@ def filter_by_reproductions(df, min_reproductions, max_reproductions):
 def filter_by_top5(df):
     return df[df['Top 5'] == True]
 
-# Configurar la paleta de colores de Seaborn
 sns.set_palette("Set2")
 
-# Filtro por género musical
 def filtro1():
     selected_genres = st.multiselect("Género Musical", genres)
     if selected_genres:
@@ -58,7 +56,6 @@ def filtro1():
         plt.ylabel('Género Musical')
         st.pyplot(plt.gcf())
 
-# Filtro por artista
 def filtro2():
     col1, col2, col3 = st.columns(3)
     with col1:
@@ -88,7 +85,6 @@ def filtro2():
                 promedio_reproducciones = filtered_df_song['Número de reproducciones'].mean()
                 st.subheader(round(promedio_reproducciones, 1))
 
-# Filtro por año de lanzamiento
 def filtro3():
     start_year, end_year = st.slider("Año de Lanzamiento", min_value=int(years[0]), max_value=int(years[-1]), value=(int(years[0]), int(years[-1])))
     filtered_df = filter_by_release_year(df, start_year, end_year)
@@ -101,7 +97,6 @@ def filtro3():
     plt.ylabel('Número de Canciones')
     st.pyplot(plt.gcf())
 
-# Filtro por número de reproducciones
 def filtro4():
     min_reproductions, max_reproductions = st.slider("Número de Reproducciones", min_value=int(df['Número de reproducciones'].min()), max_value=int(df['Número de reproducciones'].max()), value=(int(df['Número de reproducciones'].min()), int(df['Número de reproducciones'].max())))
     filtered_df = filter_by_reproductions(df, min_reproductions, max_reproductions)
@@ -114,7 +109,6 @@ def filtro4():
     plt.ylabel('Número de Reproducciones')
     st.pyplot(plt.gcf())
 
-# Filtro por Top 5
 def filtro5():
     filtered_df = filter_by_top5(df)
     st.dataframe(filtered_df)
@@ -126,7 +120,6 @@ def filtro5():
     plt.ylabel('Número de Reproducciones')
     st.pyplot(plt.gcf())
 
-# Menú de selección de filtro
 filtros = [
     "Filtrar por Género Musical",
     "Filtrar por Artista",

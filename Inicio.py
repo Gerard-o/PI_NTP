@@ -36,9 +36,9 @@ st.image("imgproyecto12.png", width=600)
 # Pie de página con los miembros del equipo e información del proyecto
 st.subheader("Equipo y Contacto")
 st.write("**Miembros del equipo:**")
-st.write("- GERARDO DE JESUS IDARRAGA CIRO: -----------.")
-st.write("- FREDY ALBERTO POSADA YARCE: -----------.")
-st.write("- JUAN SEBASTIAN ROMERO : -----------.")
+st.write("- GERARDO DE JESUS IDARRAGA CIRO")
+st.write("- FREDY ALBERTO POSADA YARCE")
+st.write("- JUAN SEBASTIAN ROMERO ")
 
 st.write("""Información de contacto:[Enlace Información de contacto](https://outlook.office365.com/mail/)""")
 

@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -10,131 +9,79 @@ st.title("Simulador Cesde")
 df = pd.read_csv('static/datasets/cesde.csv')
 
 gruposU = sorted(df['GRUPO'].unique())
-nivelesU = sorted(df['NIVEL'].unique())
-jornadasU = sorted(df['JORNADA'].unique())
-horarioU = sorted(df['HORARIO'].unique())
-submodulosU = sorted(df['SUBMODULO'].unique())
-docentesU = sorted(df['DOCENTE'].unique())
 momentosU = sorted(df['MOMENTO'].unique())
 
 # -----------------------------------------------------------------------------------
-def filtro1():    
+
+def filtro1():
+    st.header("Notas por Grupo y Momento")
     col1, col2 = st.columns(2)
     with col1:
         grupo = st.selectbox("Grupo", gruposU)
     with col2:
         momento = st.selectbox("Momento", momentosU)
     resultado = df[(df['GRUPO'] == grupo) & (df['MOMENTO'] == momento)]
-   
-    resultado = resultado.reset_index(drop=True) 
-   
-    estudiante = resultado['NOMBRE']
-    fig = go.Figure(data=[
-        go.Bar(name='CONOCIMIENTO', x=estudiante, y=resultado['CONOCIMIENTO']),
-        go.Bar(name='DESEMPEÑO', x=estudiante, y=resultado['DESEMPEÑO']),
-        go.Bar(name='PRODUCTO', x=estudiante, y=resultado['PRODUCTO'])
-    ])   
-    fig.update_layout(barmode='group')
-    st.plotly_chart(fig, use_container_width=True)
-    # Tabla
-    st.table(resultado[["NOMBRE", "CONOCIMIENTO", "DESEMPEÑO", "PRODUCTO"]])
+    mostrar_resultados(resultado)
 
-# -----------------------------------------------------------------------------------
-def filtro2():
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        grupo = st.selectbox("Grupo", gruposU)
-    with col2:
-        nombres = df[df['GRUPO'] == grupo]
-        nombre = st.selectbox("Estudiante", nombres["NOMBRE"])
-    with col3:
-        momentosU.append("Todos")
-        momento = st.selectbox("Momento", momentosU)   
+def filtro_notas_mas_bajas():
+    st.header("Notas Más Bajas por Estudiante")
+    notas_mas_bajas = df.loc[df[['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']].idxmin(axis=0)]
+    mostrar_resultados(notas_mas_bajas)
 
-    if momento == "Todos":
-        resultado = df[(df['GRUPO'] == grupo) & (df['NOMBRE'] == nombre)]
-      
-        momentos = sorted(df['MOMENTO'].unique())
-        fig = go.Figure(data=[
-            go.Bar(name='CONOCIMIENTO', x=momentos, y=resultado['CONOCIMIENTO']),
-            go.Bar(name='DESEMPEÑO', x=momentos, y=resultado['DESEMPEÑO']),
-            go.Bar(name='PRODUCTO', x=momentos, y=resultado['PRODUCTO'])
-        ])   
-        fig.update_layout(barmode='group')
+def filtro_docentes_varias_materias():
+    st.header("Docentes que Imparten Varias Materias")
+    materias_por_docente = df.groupby('DOCENTE')['SUBMODULO'].nunique()
+    docentes_varias_materias = materias_por_docente[materias_por_docente > 1]
+    
+    if not docentes_varias_materias.empty:
+        fig = go.Figure(go.Bar(x=docentes_varias_materias.index, y=docentes_varias_materias.values))
+        fig.update_layout(
+            xaxis_title='Docente',
+            yaxis_title='Cantidad de Materias',
+            title='Docentes que Imparten Varias Materias'
+        )
         st.plotly_chart(fig, use_container_width=True)
+        st.table(docentes_varias_materias.reset_index().rename(columns={'index': 'Docente', 'SUBMODULO': 'Cantidad de Materias'}))
+    else:
+        st.write("No hay docentes que impartan varias materias.")
 
-        resultado = resultado.reset_index(drop=True) 
-        m1 = resultado.loc[0, ['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']]
-        m2 = resultado.loc[1, ['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']]
-        m3 = resultado.loc[2, ['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']]
-        tm = pd.Series([m1.mean(), m2.mean(), m3.mean()])       
-        st.subheader("Promedio")
-        st.subheader(round(tm.mean(), 1)) 
-    else:   
-        resultado = df[(df['GRUPO'] == grupo) & (df['MOMENTO'] == momento) & (df['NOMBRE'] == nombre)]
-        
-        estudiante = resultado['NOMBRE']
-        fig = go.Figure(data=[
-            go.Bar(name='CONOCIMIENTO', x=estudiante, y=resultado['CONOCIMIENTO']),
-            go.Bar(name='DESEMPEÑO', x=estudiante, y=resultado['DESEMPEÑO']),
-            go.Bar(name='PRODUCTO', x=estudiante, y=resultado['PRODUCTO'])
-        ])   
-        fig.update_layout(barmode='group')
-        st.plotly_chart(fig, use_container_width=True)
-
-        resultado = resultado.reset_index(drop=True) 
-        conocimiento = resultado.loc[0, ['CONOCIMIENTO', 'DESEMPEÑO', 'PRODUCTO']]
-        st.subheader("Promedio")
-        st.subheader(round(conocimiento.mean(), 1)) 
-
-# -----------------------------------------------------------------------------------
 def filtro_horario():
-    st.header("Grafico de Horarios")
+    st.header("Gráfico de Horarios")
     horario_conteo = df['HORARIO'].value_counts()
-    
-  
-    fig = go.Figure(data=[
-        go.Bar(name='Horarios', x=horario_conteo.index, y=horario_conteo.values)
-    ])   
-    fig.update_layout(barmode='group')
-    st.plotly_chart(fig, use_container_width=True)
-    
- 
-    st.table(horario_conteo.reset_index().rename(columns={'index': 'Horario', 'HORARIO': 'Conteo'}))
+    mostrar_grafico(horario_conteo, 'Horario', 'Conteo')
 
-# -----------------------------------------------------------------------------------
 def filtro_jornada():
-    st.header("Grafico de Jornadas")
-    jornada_conteo = df['JORNADA'].value_counts()
-    
-    
-    fig = go.Figure(data=[
-        go.Bar(name='Jornadas', x=jornada_conteo.index, y=jornada_conteo.values)
-    ])   
-    fig.update_layout(barmode='group')
-    st.plotly_chart(fig, use_container_width=True)
-    
-   
-    st.table(jornada_conteo.reset_index().rename(columns={'index': 'Jornada', 'JORNADA': 'Conteo'}))
+    st.header("Gráfico de Pareto de Jornadas")
+    jornada_conteo = df['JORNADA'].value_counts().sort_values(ascending=False)
+    mostrar_grafico(jornada_conteo, 'Jornada', 'Conteo')
 
 # -----------------------------------------------------------------------------------
-filtros = [
-    "Notas por grupo",
-    "Notas por estudiante",
-    "Grafico de horarios",
-    "Grafico de jornadas"
-]
 
-filtro = st.selectbox("Filtros", filtros)
+def mostrar_grafico(data, x_label, y_label):
+    fig = go.Figure(data=[go.Scatter(x=data.index, y=data.values, mode='lines+markers')])
+    fig.update_layout(xaxis_title=x_label, yaxis_title=y_label, margin=dict(l=0, r=0, b=0, t=0))
+    st.plotly_chart(fig, use_container_width=True)
+    st.table(data.reset_index().rename(columns={'index': x_label, data.name: y_label}))
 
-if filtro:
-    filtro_index = filtros.index(filtro)
+def mostrar_resultados(data):
+    fig = go.Figure(data=[
+        go.Line(name='CONOCIMIENTO', x=data['NOMBRE'], y=data['CONOCIMIENTO']),
+        go.Line(name='DESEMPEÑO', x=data['NOMBRE'], y=data['DESEMPEÑO']),
+        go.Line(name='PRODUCTO', x=data['NOMBRE'], y=data['PRODUCTO'])
+    ])
+    st.plotly_chart(fig, use_container_width=True)
+    st.table(data[["NOMBRE", "CONOCIMIENTO", "DESEMPEÑO", "PRODUCTO"]])
 
-    if filtro_index == 0:
-        filtro1()
-    elif filtro_index == 1:
-        filtro2()
-    elif filtro_index == 2:
-        filtro_horario()
-    elif filtro_index == 3:
-        filtro_jornada()
+# -----------------------------------------------------------------------------------
+
+filtros = {
+    "Notas por Grupo y Momento": filtro1,
+    "Notas Más Bajas por Estudiante": filtro_notas_mas_bajas,
+    "Docentes que Imparten Varias Materias": filtro_docentes_varias_materias,
+    "Gráfico de Horarios": filtro_horario,
+    "Gráfico de Pareto de Jornadas": filtro_jornada
+}
+
+filtro_seleccionado = st.selectbox("Filtros", list(filtros.keys()))
+if filtro_seleccionado:
+    filtros[filtro_seleccionado]()
