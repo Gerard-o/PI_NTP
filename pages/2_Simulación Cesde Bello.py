@@ -46,14 +46,14 @@ def filtro_docentes_varias_materias():
         st.write("No hay docentes que impartan varias materias.")
 
 def filtro_horario():
-    st.header("Gráfico de Horarios")
+    st.header("Gráficos Radiales de Horarios")
     horario_conteo = df['HORARIO'].value_counts()
-    mostrar_grafico(horario_conteo, 'Horario', 'Conteo')
+    mostrar_grafico_radial(horario_conteo, 'Horario', 'Conteo')
 
 def filtro_jornada():
-    st.header("Gráfico de Pareto de Jornadas")
-    jornada_conteo = df['JORNADA'].value_counts().sort_values(ascending=False)
-    mostrar_grafico(jornada_conteo, 'Jornada', 'Conteo')
+    st.header("Gráfico de Cuadrantes de Jornadas")
+    jornada_conteo = df['JORNADA'].value_counts()
+    mostrar_cuadrantes(jornada_conteo, 'Jornada', 'Conteo')
 
 # -----------------------------------------------------------------------------------
 
@@ -63,11 +63,70 @@ def mostrar_grafico(data, x_label, y_label):
     st.plotly_chart(fig, use_container_width=True)
     st.table(data.reset_index().rename(columns={'index': x_label, data.name: y_label}))
 
+def mostrar_grafico_radial(data, x_label, y_label):
+    fig = go.Figure(data=go.Barpolar(
+        r=data.values,
+        theta=data.index,
+        marker=dict(
+            color=data.values,
+            colorscale='Viridis',
+            line=dict(color='black', width=1)
+        )
+    ))
+    
+    fig.update_layout(
+        polar=dict(
+            radialaxis=dict(visible=True, range=[0, max(data.values)]),
+        ),
+        showlegend=False,
+        title='Gráficos Radiales de Horarios'
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    st.table(data.reset_index().rename(columns={'index': x_label, data.name: y_label}))
+
+def mostrar_cuadrantes(data, x_label, y_label):
+    total = data.sum()
+    acum = data.cumsum()
+    percent = acum / total * 100
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        x=data.index,
+        y=data.values,
+        mode='lines+markers',
+        name='Jornada'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=data.index,
+        y=percent,
+        mode='lines+markers',
+        name='Acumulado (%)',
+        yaxis='y2'
+    ))
+
+    fig.update_layout(
+        xaxis_title=x_label,
+        yaxis_title=y_label,
+        yaxis2=dict(
+            title='Acumulado (%)',
+            overlaying='y',
+            side='right'
+        ),
+        margin=dict(l=0, r=0, b=0, t=0),
+        title='Gráfico de Cuadrantes de Jornadas'
+    )
+    
+    st.plotly_chart(fig, use_container_width=True)
+    st.table(data.reset_index().rename(columns={'index': x_label, data.name: y_label}))
+
 def mostrar_resultados(data):
     fig = go.Figure(data=[
-        go.Line(name='CONOCIMIENTO', x=data['NOMBRE'], y=data['CONOCIMIENTO']),
-        go.Line(name='DESEMPEÑO', x=data['NOMBRE'], y=data['DESEMPEÑO']),
-        go.Line(name='PRODUCTO', x=data['NOMBRE'], y=data['PRODUCTO'])
+        go.Scatter(name='CONOCIMIENTO', x=data['NOMBRE'], y=data['CONOCIMIENTO'], mode='lines+markers'),
+        go.Scatter(name='DESEMPEÑO', x=data['NOMBRE'], y=data['DESEMPEÑO'], mode='lines+markers'),
+        go.Scatter(name='PRODUCTO', x=data['NOMBRE'], y=data['PRODUCTO'], mode='lines+markers')
     ])
     st.plotly_chart(fig, use_container_width=True)
     st.table(data[["NOMBRE", "CONOCIMIENTO", "DESEMPEÑO", "PRODUCTO"]])
@@ -78,8 +137,8 @@ filtros = {
     "Notas por Grupo y Momento": filtro1,
     "Notas Más Bajas por Estudiante": filtro_notas_mas_bajas,
     "Docentes que Imparten Varias Materias": filtro_docentes_varias_materias,
-    "Gráfico de Horarios": filtro_horario,
-    "Gráfico de Pareto de Jornadas": filtro_jornada
+    "Gráficos Radiales de Horarios": filtro_horario,
+    "Gráfico de Cuadrantes de Jornadas": filtro_jornada
 }
 
 filtro_seleccionado = st.selectbox("Filtros", list(filtros.keys()))
