@@ -80,7 +80,6 @@ st.write('''
 </p>
 ''', unsafe_allow_html=True)
 
-# Resumen del Proyecto
 st.subheader("Resumen del Proyecto")
 st.write('''
 <p class="custom-text">
@@ -94,7 +93,6 @@ st.write('''
 </p>
 ''', unsafe_allow_html=True)
 
-# Características y Beneficios
 st.subheader("Características y Beneficios")
 st.write('''
 <p class="custom-text">
@@ -155,32 +153,23 @@ La integración de funciones de interacción y comunidad permite a los usuarios 
 - <strong>Compromiso y Fidelización:</strong> Las características de comunidad aumentan el Compromiso y la lealtad de los usuarios, ya que se sienten parte de una sociedad centrada en la música.
 </p>
 ''', unsafe_allow_html=True)
-# Gráfico interactivo o visualización (Opcional)
-# Reemplaza con tus datos y visualización específicos
 
-# Datos de ejemplo de los géneros musicales más escuchados en todo el mundo
 data = [30, 25, 20, 15, 10]
-labels = ["Pop", "Hip-Hop", "Rock", "EDM", "Reggaetón"]
+labels = ["Pop", "Hip-Hop", "Rock", "EDM", "Reggae"]
 
-# Crear la figura y el eje
 fig, ax = plt.subplots()
 
-# Dibujar el gráfico de barras
 ax.bar(labels, data, color=["#ff9999","#66b3ff","#99ff99","#ffcc99","#c2c2f0"])
 
-# Añadir títulos y etiquetas
 ax.set_title("Géneros Musicales Más Escuchados en Todo el Mundo")
 ax.set_xlabel("Géneros Musicales")
 ax.set_ylabel("Porcentaje de Audiencia (%)")
 
-# Mostrar el gráfico
 plt.show()
-# Quitar el fondo
 fig.patch.set_facecolor('none')
 ax.patch.set_facecolor('none')
 st.pyplot(fig)
 
-# Llamado a la acción
 st.subheader("¡Toma Acción!")
 st.write("**Visite nuestro sitio web:** [Enlace al sitio web del proyecto](https://g7qyxwvy2fxpgtigncgkmf.streamlit.app/)")
 st.write("**Contáctenos:** [Enlace al correo electrónico de contacto](https://outlook.office365.com/mail/)")
