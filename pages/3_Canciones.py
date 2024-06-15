@@ -1,35 +1,35 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns 
+import seaborn as sns
+import numpy as np
 
+# Configuración de la página de Streamlit
 st.set_page_config(layout="wide")
 
-
-
-
+# Título de la aplicación
 st.title("Datasets Canciones")
 
+# Carga del archivo CSV en un DataFrame
 df = pd.read_csv('static/datasets/Canciones.csv')
 
+# Obtención de listas únicas de artistas, géneros y años de lanzamiento
 artists = sorted(df['Nombre del artista'].unique())
 genres = sorted(df['Género/s musical/es'].unique())
 years = sorted(df['Fecha de lanzamiento'].apply(lambda x: x.split('-')[0]).unique())
 
+# Definición de funciones de filtrado
 def filter_by_genre(df, genres):
     return df[df['Género/s musical/es'].isin(genres)]
 
 def filter_by_artist(df, artist):
     return df[df['Nombre del artista'] == artist]
 
-def filter_by_album(df, album):
-    return df[df['Álbum'] == album]
+def filter_by_album_title(df, album_title):
+    return df[df['Título del álbum'] == album_title]
 
 def filter_by_song(df, song):
     return df[df['Título de la canción'] == song]
-
-def filter_by_album(df, album_title):
-    return df[df['Título del álbum'] == album_title]
 
 def filter_by_release_year(df, start_year, end_year):
     df['Fecha de lanzamiento'] = pd.to_datetime(df['Fecha de lanzamiento'])
@@ -41,8 +41,10 @@ def filter_by_reproductions(df, min_reproductions, max_reproductions):
 def filter_by_top5(df):
     return df[df['Top 5'] == True]
 
+# Configuración de la paleta de colores de Seaborn
 sns.set_palette("Set2")
 
+# Definición de funciones para cada filtro
 def filtro1():
     selected_genres = st.multiselect("Género Musical", genres)
     if selected_genres:
@@ -50,11 +52,32 @@ def filtro1():
         st.dataframe(filtered_df)
         st.subheader("Gráfico de Canciones por Género")
         
-        plt.figure(figsize=(10, 5))
-        sns.countplot(data=filtered_df, y='Género/s musical/es', order=filtered_df['Género/s musical/es'].value_counts().index)
-        plt.xlabel('Número de Canciones')
-        plt.ylabel('Género Musical')
-        st.pyplot(plt.gcf())
+        genre_counts = filtered_df['Género/s musical/es'].value_counts()
+        total_songs = genre_counts.sum()
+        genre_percentages = (genre_counts / total_songs) * 100
+        
+        # Preparar datos para el gráfico de estrella
+        labels = genre_percentages.index
+        stats = genre_percentages.values
+        angles = np.linspace(0, 2 * np.pi, len(labels), endpoint=False).tolist()
+        stats = np.concatenate((stats,[stats[0]]))
+        angles += angles[:1]
+        
+        fig, ax = plt.subplots(figsize=(6, 6), subplot_kw=dict(polar=True))
+        ax.fill(angles, stats, color='red', alpha=0.25)
+        ax.plot(angles, stats, color='red', linewidth=2)
+        ax.set_yticklabels([])
+        ax.set_xticks(angles[:-1])
+        ax.set_xticklabels(labels)
+        
+        for i, label in enumerate(labels):
+            angle_rad = angles[i]
+            ha = 'right'
+            if angle_rad < np.pi/2 or angle_rad > 3*np.pi/2:
+                ha = 'left'
+            ax.text(angle_rad, stats[i], f'{stats[i]:.1f}%', horizontalalignment=ha, size=10, color='black')
+        
+        st.pyplot(fig)
 
 def filtro2():
     col1, col2, col3 = st.columns(3)
@@ -66,7 +89,7 @@ def filtro2():
         with col2:
             selected_album = st.selectbox("Álbum", albums)
         if selected_album:
-            filtered_df_album = filter_by_album(filtered_df_artist, selected_album)
+            filtered_df_album = filter_by_album_title(filtered_df_artist, selected_album)
             songs = sorted(filtered_df_album['Título de la canción'].unique())
             with col3:
                 selected_song = st.selectbox("Canción", songs)
@@ -120,6 +143,7 @@ def filtro5():
     plt.ylabel('Número de Reproducciones')
     st.pyplot(plt.gcf())
 
+# Lista de filtros disponibles
 filtros = [
     "Filtrar por Género Musical",
     "Filtrar por Artista",
@@ -128,8 +152,10 @@ filtros = [
     "Filtrar por Top 5"
 ]
 
+# Cuadro de selección para elegir el filtro
 filtro = st.selectbox("Selecciona un Filtro", filtros)
 
+# Llamada a la función correspondiente según el filtro seleccionado
 if filtro:
     if filtro == filtros[0]:
         filtro1()
